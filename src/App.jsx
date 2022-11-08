@@ -4,9 +4,9 @@ import {Register,Login,Home} from './pages'
 function App() {
   return (
     <div>
-        {/* <Register/> */}
+        <Register/>
         {/* <Login/> */}
-        <Home/>
+        {/* <Home/> */}
     </div>
   )
 }
