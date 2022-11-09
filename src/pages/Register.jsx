@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, storage, db } from "../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { BiImageAdd } from "react-icons/bi";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -14,6 +16,7 @@ function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
+  const navigate = useNavigate();
 
   function handleFileChange(e) {
     e.preventDefault();
@@ -44,28 +47,27 @@ function Register() {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             try {
-            await updateProfile(res.user, {
-              displayName: formData.username,
-              photoURL: downloadURL,
-            });
+              await updateProfile(res.user, {
+                displayName: formData.username,
+                photoURL: downloadURL,
+              });
 
-            await setDoc(doc(db, "users", res.user.uid), {
-              uid: res.user.uid,
-              displayName: formData.username,
-              email: formData.email,
-              photoURL: downloadURL,
-            });
-              await setDoc(doc(db, "userChats",res.user.uid),{});
-            }
-            catch (err){
-              setError(err.message)
-            
+              await setDoc(doc(db, "users", res.user.uid), {
+                uid: res.user.uid,
+                displayName: formData.username,
+                email: formData.email,
+                photoURL: downloadURL,
+              });
+              await setDoc(doc(db, "userChats", res.user.uid), {});
+              navigate("/");
+            } catch (err) {
+              setError(err.message);
             }
           });
         }
       );
-            // 
-      // setFormData({ username: "", email: "", password: "" });
+      //
+      setFormData({ username: "", email: "", password: "" });
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -106,18 +108,22 @@ function Register() {
             className="hidden"
             type="file"
             name="file"
+            accept="image/png, image/gif, image/jpeg"
             onChange={handleFileChange}
             id="file"
           />
           <label htmlFor="file">
             <div className="flex items-center gap-2">
-              <img src="images/picture.png" alt="upload" />
+              {/* <img src="images/picture.png" alt="upload" /> */}
+              <BiImageAdd className="h-6 w-6" />
               <p>Add an avatar</p>
             </div>
           </label>
           <button className="bg-gray-800 text-white px-8 py-1">Sign up</button>
         </form>
-        <p className="my-4">Already have an account? Login</p>
+        <p className="my-4">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
         {error && <p className="text-red-500 my-2">{error}</p>}
       </div>
     </div>

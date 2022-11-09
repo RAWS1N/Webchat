@@ -8,9 +8,6 @@ function Sidebar() {
     <div>
       <Navbar/>
       <Search/>
-      <Chats/>
-      <Chats/>
-      <Chats/>  
     </div>
   );
 }

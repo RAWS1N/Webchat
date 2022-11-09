@@ -1,7 +1,7 @@
 import React from "react";
 import { IoSendSharp } from "react-icons/io5";
 import { SlPaperClip } from "react-icons/sl";
-import {BiImageAdd} from 'react-icons/bi'
+import { BiImageAdd } from "react-icons/bi";
 
 function Input() {
   return (
@@ -12,7 +12,12 @@ function Input() {
       />
       <div className="flex items-center gap-4">
         <SlPaperClip />
-        <input type="file" className="hidden" id="file" />
+        <input
+          type="file"
+          accept="image/png, image/gif, image/jpeg"
+          className="hidden"
+          id="file"
+        />
         <label htmlFor="file">
           <BiImageAdd className="h-6 w-6" />
         </label>
